@@ -22,7 +22,7 @@
 
 ## 模型效果
 
-| 模型名称 | MicroF1 | LearningRate | 参数 |
+| 模型名称 | MicroF1 | LearningRate | 预训练参数 |
 | :-----| :---- | :---- | :---- |
 | FastText | 0.8926 | 1e-3 | - |
 | TextCNN | 0.9009 | 1e-3 | - |
