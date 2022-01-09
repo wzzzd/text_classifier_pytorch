@@ -28,7 +28,7 @@
 | TextCNN | 0.9009 | 1e-3 | - |
 | TextRNN | 0.9080 | 1e-3 | - |
 | TextRCNN | 0.9142 | 1e-3 | - |
-| Tramsformer | 0.8849 | 1e-3 | - |
+| Tramsformer(2 layer encoder) | 0.8849 | 1e-3 | - |
 | Albert | 0.9124 | 2e-5 | voidful/albert_chinese_tiny |
 | Distilbert | 0.9209 | 2e-5 | Geotrend/distilbert-base-zh-cased |
 | Bert | 0.9401 | 2e-5 | bert-base-chinese |
