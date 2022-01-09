@@ -20,11 +20,27 @@
 - XLNet                                  
 
 
+## 模型效果
+
+| 模型名称 | MicroF1 | LearningRate | 参数 |
+| :-----| :---- | :---- | :---- |
+| FastText | 0.8926 | 1e-3 | - |
+| TextCNN | 0.9009 | 1e-3 | - |
+| TextRNN | 0.9080 | 1e-3 | - |
+| TextRCNN | 0.9142 | 1e-3 | - |
+| Tramsformer | 0.8849 | 1e-3 | - |
+| Albert | 0.9124 | 2e-5 | voidful/albert_chinese_tiny |
+| Distilbert | 0.9209 | 2e-5 | Geotrend/distilbert-base-zh-cased |
+| Bert | 0.9401 | 2e-5 | bert-base-chinese |
+| Roberta | 0.9448 | 2e-5 | hfl/chinese-roberta-wwm-ext |
+| Electra | 0.9377 | 2e-5 | hfl/chinese-electra-base-discriminator |
+| XLNet | 0.9051 | 2e-5 | 无参数初始化 |
+
 
 ## 支持的训练模式
 
 - 支持中英文语料训练
-    - 支持中英文的信息抽取任务
+    - 支持中英文的文本分类任务
 - 混合精度训练
     - 用于提升训练过程效率，缩短训练时间
     - 配置文件`Config.py`中的变量`adv_option`
@@ -39,16 +55,19 @@
 
 
 ## Requirement
+Python使用的是3.6.X版本，其他依赖模块如下：
 ```
-    python3.6
-    numpy==1.19.5
-    pandas==1.1.3
+    numpy==1.19.2
+    pandas==1.1.5
+    scikit_learn==1.0.2
     torch==1.8.0
-    transformers==4.6.1
-    apex==0.1 (安装方法见：https://github.com/NVIDIA/apex)
+    tqdm==4.62.3
+    transformers==4.15.0
+    apex==0.1
 ```
 
-可通过以下命令安装依赖包
+除了`apex`需要额外安装（参考官网：https://github.com/NVIDIA/apex
+），其他模块可通过以下命令安装依赖包
 ```
     pip install -r requirement.txt
 ```
@@ -66,7 +85,8 @@
 * **数据集示例**
     * 以数据集THUCNews为栗子，文本和标签使用空格隔开，采用以下形式存储：
     ```
-
+        午评沪指涨0.78%逼近2800 汽车家电农业领涨	2
+        卡佩罗：告诉你德国脚生猛的原因 不希望英德战踢点球	7
     ```
 
 
@@ -85,9 +105,6 @@
 ```
     python3 main.py
 ```
-
-
-## FAQ
 
 
 ## Reference
