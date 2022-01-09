@@ -7,17 +7,19 @@
 
 
 ## 支持的模型
-- FastText
-- TextCNN
-- TextRNN
-- TextRCNN
-- Transformer
-- Bert
-- Albert
-- Roberta
-- Distilbert
-- Electra
-- XLNet                                  
+- 非预训练类模型：
+    - FastText
+    - TextCNN
+    - TextRNN
+    - TextRCNN
+    - Transformer
+- 预训练类模型
+    - Bert
+    - Albert
+    - Roberta
+    - Distilbert
+    - Electra
+    - XLNet                                  
 
 
 ## 模型效果
