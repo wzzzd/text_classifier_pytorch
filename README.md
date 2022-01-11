@@ -26,6 +26,9 @@
 
 - 支持中英文语料训练
     - 支持中英文的文本分类任务
+- 支持多种模型使用
+    - 配置文件`Config.py`中的变量`model_name`表示模型名称，可以更改成你想要加载的模型名称。
+    - 若是预训练类的模型，如Bert等，需要同步修改变量`initial_pretrain_model`和`initial_pretrain_tokenizer`，修改为你想要加载的预训练参数。
 - 混合精度训练
     - 用于提升训练过程效率，缩短训练时间
     - 配置文件`Config.py`中的变量`fp16`值改为`True`
