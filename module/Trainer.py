@@ -259,7 +259,8 @@ class Trainer(object):
         # FGM
         if self.config.adv_option == 'FGM':
             self.fgm.attack()
-            loss_adv = self.model(**batch)[0]
+            output = self.model(**batch)[0]
+            loss_adv = self.loss_manager.compute(output, batch['label'])
             if torch.cuda.device_count() > 1:
                 loss_adv = loss_adv.mean()
             loss_adv.backward()
@@ -274,10 +275,11 @@ class Trainer(object):
                     self.model.zero_grad()
                 else:
                     self.pgd.restore_grad()
-                loss_adv = self.model(**batch)[0]
+                output = self.model(**batch)[0]
+                loss_adv = self.loss_manager.compute(output, batch['label'])
                 loss_adv.backward()                      # 反向传播，并在正常的grad基础上，累加对抗训练的梯度
-            self.pgd.restore()                           # 恢复embedding参数
-
+            self.pgd.restore()   
+            
 
     def save_checkpoint(self, step_current, f1_eval, f1_best):
         """

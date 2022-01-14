@@ -36,7 +36,7 @@ class LossManager(object):
             input: [N, C]
             target: [N, ]
         """
-        if self.cl_option:
+        if hidden_emb_x is not None and hidden_emb_y is not None:
             loss_ce = (1-alpha) * self.loss_func(input_x, target)
             weight_etx = 1e+5 if self.loss_cl_type=='Rdrop' else 1
             loss_cl = alpha * weight_etx * self.loss_cl_func(hidden_emb_x, hidden_emb_y)
