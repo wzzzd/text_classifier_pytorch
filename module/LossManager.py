@@ -41,10 +41,10 @@ class LossManager(object):
             weight_etx = 1e+5 if self.loss_cl_type=='Rdrop' else 1
             loss_cl = alpha * weight_etx * self.loss_cl_func(hidden_emb_x, hidden_emb_y)
             loss = loss_ce + loss_cl
-            return [loss,loss_ce,loss_cl]
+            return loss
         else:
             loss = self.loss_func(input_x, target)
-            return [loss,None,None]
+            return loss
     
 
     
@@ -58,7 +58,7 @@ class LossManager(object):
     #     loss = self.loss_func(input, target)
     #     return loss
 
-    
+
     # def compute(self, input1, input2, output_pooler1, output_pooler2, target, alpha=0.5):
     #     """        
     #     计算loss

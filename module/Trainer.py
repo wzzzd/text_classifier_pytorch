@@ -326,13 +326,13 @@ class Trainer(object):
         with torch.no_grad():
             for i, batch in enumerate(self.valid_loader):
                 batch = {k:v.to(self.device) for k,v in batch.items()}
-                output,_ = self.model(**batch)
+                output = self.model(**batch)[0]
                 # 计算loss
                 # loss = F.cross_entropy(outputs, labels)
                 # loss_total += outputx[0]
                 target = batch['label']
                 loss = loss_manager.compute(output, target)
-                loss_total += loss[0]
+                loss_total += loss
                 # 获取标签
                 labels = batch['label'].cpu().numpy()#[:,1:-1]
                 predic = torch.max(output, -1)[1].cpu().numpy()
