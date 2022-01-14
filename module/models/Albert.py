@@ -17,5 +17,5 @@ class Albert(AlbertPreTrainedModel):
     def forward(self, input_ids, attention_mask, label=None):  
         output = self.albert(input_ids, attention_mask=attention_mask)
         output = self.fc(output.pooler_output)
-        return output
+        return [output,output.pooler_output]
 

@@ -37,6 +37,10 @@ class Config(object):
     step_save = 1000                                            # 多少步保存一次模型
     loss_type = 'ce'
     
+    # 对比学习
+    cl_option = True                                            # 是否使用对比学习
+    cl_method = 'Rdrop'                                         # Rdrop/InfoNCE
+    cl_loss_weight = 0.5                                        # 对比学习loss比例
     # 对抗训练
     adv_option = 'None'                                         # 是否引入对抗训练：none/FGM/PGD
     adv_name = 'word_embeddings'

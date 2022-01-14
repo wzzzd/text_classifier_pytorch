@@ -19,5 +19,5 @@ class Roberta(BertPreTrainedModel):
   
         output = self.bert(input_ids, attention_mask=attention_mask)
         out = self.fc(output.pooler_output)
-        return out
+        return [out,output.pooler_output]
 

@@ -34,7 +34,7 @@ class Distilbert(DistilBertPreTrainedModel):
         # pooler_output = self.pool_layer(pooler_output)
         # class
         output = self.fc(pooler_output)
-        return output
+        return [output,pooler_output]
 
 
 # class BertPooler(nn.Module):

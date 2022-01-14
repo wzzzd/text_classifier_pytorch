@@ -23,5 +23,5 @@ class XLNet(XLNetPreTrainedModel):
         pooler_output = self.dense(first_token_tensor)
         # pooler_output = self.activation(pooler_output)
         out = self.fc(pooler_output)
-        return out
+        return [out,pooler_output]
 

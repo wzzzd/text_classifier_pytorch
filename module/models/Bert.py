@@ -15,9 +15,16 @@ class Bert(BertPreTrainedModel):
         self.num_classes = config.num_labels
         self.fc = nn.Linear(self.hidden_size, self.num_classes)
 
-    def forward(self, input_ids, attention_mask, label=None):
+    def forward(self, 
+                input_ids, 
+                attention_mask, 
+                label=None, 
+                input_ids_anti=None, 
+                label_anti=None):
         # inference  
-        output = self.bert(input_ids, attention_mask=attention_mask)    #(batch_size, sen_length, hidden_size)
-        output = self.fc(output.pooler_output)
-        return output
+        output_bert = self.bert(input_ids, attention_mask=attention_mask)    #(batch_size, sen_length, hidden_size)
+        output_pooler = output_bert.pooler_output
+        output = self.fc(output_pooler)
+        
+        return [output, output_pooler]
 

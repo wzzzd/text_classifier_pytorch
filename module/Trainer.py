@@ -40,13 +40,12 @@ class Trainer(object):
         self.valid_loader = valid_loader
         self.test_loader = test_loader
         # 加载标签
-        # self.tag = [ x.strip() for x in open(config.path_datasets+'label.txt','r').readlines()]
         self.load_label()
         # 加载模型
         self.load_tokenizer()
         self.load_model()
         # 加载loss计算类
-        self.loss_manager = LossManager(config.loss_type)
+        self.loss_manager = LossManager(loss_type=config.loss_type, cl_option=config.cl_option, loss_cl_type=config.cl_method)
 
 
 
@@ -202,6 +201,7 @@ class Trainer(object):
                 self.model.train()
                 loss = self.step(batch)
                 progress_bar(i, {'loss': loss.item()})
+                # progress_bar(i, {'loss': loss.item(),'loss_ce': loss_ce.item(),'loss_cl': loss_nce.item()})
                 step_current += 1
                 # 模型保存
                 if step_current%self.config.step_save==0 and step_current>0:
@@ -211,21 +211,31 @@ class Trainer(object):
                     f1_best = self.save_checkpoint(step_current, f1_eval, f1_best)
             print('\nEpoch:{}  Iter:{}/{}  loss:{:.4f}\n'.format(epoch, step_current, step_total, loss.item()))
         self.evaluate(print_table=True)
-        
+    
+    
 
     def step(self, batch):
         """
         每一个batch的训练过程
         """
-        # 正常训练
+        
+        # 数据操作
         batch = {k:v.to(self.device) for k,v in batch.items()}
-        outputs = self.model(**batch)
-        # 计算loss
         target = batch['label']
-        loss = self.loss_manager.compute(outputs, target)
+        # 模型输入&输出
+        outputs = self.model(**batch)
+        output, hidden_emb = outputs
+        # 对比学习
+        if self.config.cl_option:
+            # 重新获取一次模型输出
+            outputs_etx = self.model(**batch)
+            _, hidden_emb_etx = outputs_etx
+            loss = self.loss_manager.compute(output, target, hidden_emb, hidden_emb_etx, alpha=self.config.cl_loss_weight)
+        else:
+            loss = self.loss_manager.compute(output, target)
+        # 反向传播
         if torch.cuda.device_count() > 1:
             loss = loss.mean()
-        # 反向传播
         if self.config.fp16:
             with amp.scale_loss(loss, self.optimizer) as scaled_loss:
                 scaled_loss.backward()
@@ -312,16 +322,17 @@ class Trainer(object):
         loss_total = 0
         predict_all = np.array([], dtype=int)
         labels_all = np.array([], dtype=int)
+        loss_manager = LossManager(loss_type=self.config.loss_type, cl_option=False)
         with torch.no_grad():
             for i, batch in enumerate(self.valid_loader):
                 batch = {k:v.to(self.device) for k,v in batch.items()}
-                output = self.model(**batch)
+                output,_ = self.model(**batch)
                 # 计算loss
                 # loss = F.cross_entropy(outputs, labels)
                 # loss_total += outputx[0]
                 target = batch['label']
-                loss = self.loss_manager.compute(output, target)
-                loss_total += loss
+                loss = loss_manager.compute(output, target)
+                loss_total += loss[0]
                 # 获取标签
                 labels = batch['label'].cpu().numpy()#[:,1:-1]
                 predic = torch.max(output, -1)[1].cpu().numpy()

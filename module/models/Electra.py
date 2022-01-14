@@ -23,5 +23,5 @@ class Electra(ElectraPreTrainedModel):
         pooler_output = self.dense(first_token_tensor)
         pooler_output = self.activation(pooler_output)
         output = self.fc(pooler_output)
-        return output
+        return [output,pooler_output]
 
