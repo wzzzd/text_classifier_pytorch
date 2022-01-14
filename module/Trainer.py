@@ -206,11 +206,11 @@ class Trainer(object):
                 # 模型保存
                 if step_current%self.config.step_save==0 and step_current>0:
                     # 模型评估
-                    f1_eval = self.evaluate()
+                    f1_eval = self.evaluate(self.valid_loader)
                     # 模型保存
                     f1_best = self.save_checkpoint(step_current, f1_eval, f1_best)
             print('\nEpoch:{}  Iter:{}/{}  loss:{:.4f}\n'.format(epoch, step_current, step_total, loss.item()))
-        self.evaluate(print_table=True)
+        self.evaluate(self.test_loader, print_table=True)
     
     
 
@@ -314,7 +314,7 @@ class Trainer(object):
         return f1_best
 
 
-    def evaluate(self, print_table=False):
+    def evaluate(self, data, print_table=False):
         """
         模型测试集效果评估
         """
@@ -324,7 +324,7 @@ class Trainer(object):
         labels_all = np.array([], dtype=int)
         loss_manager = LossManager(loss_type=self.config.loss_type, cl_option=False)
         with torch.no_grad():
-            for i, batch in enumerate(self.valid_loader):
+            for i, batch in enumerate(data):
                 batch = {k:v.to(self.device) for k,v in batch.items()}
                 output = self.model(**batch)[0]
                 # 计算loss
