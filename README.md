@@ -123,6 +123,9 @@ Python使用的是3.6.X版本，其他依赖模块如下：
 ## Reference
 
 [Github:transformers] https://github.com/huggingface/transformers
+
 [Paper:Bert] https://arxiv.org/abs/1810.04805
+
 [Paper:RDrop] https://arxiv.org/abs/2106.14448
+
 [Paper:SimCSE] https://arxiv.org/abs/2104.08821
