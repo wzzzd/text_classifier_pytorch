@@ -160,12 +160,19 @@ class Predictor(object):
         special_tokens = self.tokenizer.get_special_tokens()
         src = []
         for line in input_ids:
-            src_line = ''
-            for x in line:
-                tmp_x = self.tokenizer.index2token.get(x, '')
-                # 跳过特殊字符
-                if tmp_x not in special_tokens:
-                    src_line += tmp_x
+            # 分开是否是预训练语言
+            if self.config.model_name in self.config.lm_model_list:
+                src_line = self.tokenizer.tokenizer.convert_ids_to_tokens(line)
+                # 过滤特殊字符
+                src_line = [x for x in src_line if x not in special_tokens]
+                src_line = ' '.join(src_line)
+            else:
+                src_line = ''
+                for x in line:
+                    tmp_x = self.tokenizer.index2token.get(x, '')
+                    # 跳过特殊字符
+                    if tmp_x not in special_tokens:
+                        src_line += tmp_x
             src.append(src_line)
         return src
         
