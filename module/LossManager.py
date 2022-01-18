@@ -3,6 +3,7 @@ from torch.nn import CrossEntropyLoss
 from module.loss.focal_loss import FocalLoss
 from module.loss.infonce_loss import InfoNCELoss
 from module.loss.kl_loss import KLLoss
+from module.loss.label_smoothing import LabelSmoothingCrossEntropy
 
 
 class LossManager(object):
@@ -13,9 +14,11 @@ class LossManager(object):
         self.loss_cl_type = loss_cl_type
         # 判断配置的loss类型
         if loss_type == 'focalloss':
-            self.loss_func = CrossEntropyLoss()
-        else:
             self.loss_func = FocalLoss()
+        elif loss_type == 'LabelSmoothingCrossEntropy':
+            self.loss_func = LabelSmoothingCrossEntropy()
+        else:
+            self.loss_func = CrossEntropyLoss()
             
         if cl_option:
             if loss_cl_type == 'Rdrop':
