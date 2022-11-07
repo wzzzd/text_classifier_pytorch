@@ -55,9 +55,9 @@ class TextCNN(nn.Module):
         out = self.embedding(input_ids)
         out = out.unsqueeze(1)
         out = torch.cat([self.conv_and_pool(out, conv) for conv in self.convs], 1)
-        out = self.dropout(out)
-        out = self.fc(out)
-        return out
+        out_drop = self.dropout(out)
+        out = self.fc(out_drop)
+        return [out, out_drop]
     
         # # 计算loss
         # loss = None

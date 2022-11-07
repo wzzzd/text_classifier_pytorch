@@ -62,9 +62,9 @@ class Transformer(nn.Module):
         out = self.pos_encoder(out)             # (seq_len, batch_size, emb_size)
         out = self.transformer_encoder(out)     # (seq_len, batch_size, emb_size)
         out = out.transpose(0,1)                # (batch_size, seq_len, emb_size)
-        out = F.max_pool1d(out, out.size(2)).squeeze(2)
-        out = self.fc(out)
-        return out
+        out_pool = F.max_pool1d(out, out.size(2)).squeeze(2)
+        out = self.fc(out_pool)
+        return [out,out_pool]
 
 
 class PositionalEncoding(nn.Module):

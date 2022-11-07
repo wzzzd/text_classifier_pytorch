@@ -50,6 +50,6 @@ class TextRCNN(nn.Module):
         out = torch.cat((embed, out), 2)
         out = F.relu(out)
         out = out.permute(0, 2, 1)
-        out = self.maxpool(out).squeeze()
-        out = self.fc(out)
-        return out
+        out_squ = self.maxpool(out).squeeze()
+        out = self.fc(out_squ)
+        return [out, out_squ]

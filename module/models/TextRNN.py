@@ -43,6 +43,6 @@ class TextRNN(nn.Module):
 
     def forward(self, input_ids, label, attention_mask):
         out = self.embedding(input_ids)  # [batch_size, seq_len, embeding]=[128, 32, 300]
-        out, _ = self.lstm(out)
-        out = self.fc(out[:, -1, :])  # 句子最后时刻的 hidden state
-        return out
+        out_lstm, _ = self.lstm(out)
+        out = self.fc(out_lstm[:, -1, :])  # 句子最后时刻的 hidden state
+        return [out, out_lstm]

@@ -51,9 +51,9 @@ class FastText(nn.Module):
         out = out.mean(dim=1)                       # size: (batch_size, dim)
         out = self.dropout(out)
         out = self.fc1(out)                         # size: (batch_size, hidden_size)
-        out = F.relu(out)
-        out = self.fc2(out)                         # size: (batch_size, num_class)
-        return out
+        out_relu = F.relu(out)
+        out = self.fc2(out_relu)                         # size: (batch_size, num_class)
+        return [out,out_relu]
         # # 计算loss
         # loss = None
         # if label is not None:

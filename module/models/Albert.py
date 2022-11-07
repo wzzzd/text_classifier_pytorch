@@ -15,7 +15,7 @@ class Albert(AlbertPreTrainedModel):
         self.fc = nn.Linear(self.hidden_size, self.num_classes)
 
     def forward(self, input_ids, attention_mask, label=None):  
-        output = self.albert(input_ids, attention_mask=attention_mask)
-        output = self.fc(output.pooler_output)
-        return [output,output.pooler_output]
+        output_albert = self.albert(input_ids, attention_mask=attention_mask)
+        output = self.fc(output_albert.pooler_output)
+        return [output,output_albert.pooler_output]
 

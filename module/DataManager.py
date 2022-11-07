@@ -80,6 +80,7 @@ class DataManager(object):
                 # 标签映射表存到本地
                 write_file(token2index, path_token + '.txt')
                 pkl.dump(token2index, open(path_token, 'wb'))
+                self.tokenizer.load(path_token)
         else:
             tokenizer = tokenizer.from_pretrained(self.config.initial_pretrain_tokenizer)
             self.tokenizer = LMTextTokenizer(tokenizer)
