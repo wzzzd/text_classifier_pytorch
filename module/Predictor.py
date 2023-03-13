@@ -121,7 +121,7 @@ class Predictor(object):
             batch = {k:v.to(self.config.device) for k,v in batch.items()}
             with torch.no_grad():
                 output = self.model(**batch)
-            output = outputs[0]
+            output = output[0]
             # 输入文本转换
             input_ids = batch['input_ids'].cpu().numpy()
             tmp_src_string = self.ids2string(input_ids)
