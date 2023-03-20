@@ -136,10 +136,10 @@ class Predictor(object):
             progress_bar(i, {})
 
         # 计算指标
-        report = metrics.classification_report(label, pred, target_names=self.label, digits=4)
-        confusion = metrics.confusion_matrix(label, pred)
-        print('Evaluate Classifier Performance')
-        print(report)
+        # report = metrics.classification_report(label, pred, target_names=self.label, digits=4)
+        # confusion = metrics.confusion_matrix(label, pred)
+        # print('Evaluate Classifier Performance')
+        # print(report)
         
         # 保存
         data = {'src':src, 'label':label, 'pred':pred}
